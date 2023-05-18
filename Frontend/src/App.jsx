@@ -29,10 +29,13 @@ function App() {
         if (data.get("species") === "All") {
             setFilteredSightings(sightings)
         } else {
-            const result = sightings.filter(sight => {
-                return sight.species === data.get('species')
-            })
-            setFilteredSightings(result)
+            await axiosClient.get(`/api/v1/sightings?species=${data.get('species')}`)
+                .then(response => {
+                    setFilteredSightings(response.data)
+                })
+                .catch(error => {
+                    console.log(error)
+                })
         }
     }
 
